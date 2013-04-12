@@ -1,0 +1,42 @@
+{
+  "name": "buildlight",
+  "description": "Delcom USB Visual Signal Indicator library in Node.js",
+  "keywords": [
+    "buildlight",
+    "delcom",
+    "usbled"
+  ],
+  "version": "0.0.1",
+  "homepage": "http://github.com/cliffano/buildlight",
+  "author": "Cliffano Subagio <blah@cliffano.com> (http://blog.cliffano.com)",
+  "contributors": [
+    "All contributors (https://github.com/cliffano/buildlight/graphs/contributors)"
+  ],
+  "main": "./lib/buildlight",
+  "repository": {
+    "type": "git",
+    "url": "http://github.com/cliffano/buildlight.git"
+  },
+  "bugs": {
+    "url": "http://github.com/cliffano/buildlight/issues"
+  },
+  "directories": {
+    "lib": "./lib",
+    "test": "./test"
+  },
+  "dependencies": {
+  },
+  "devDependencies": {
+    "buster": "0.6.12"
+  },
+  "scripts": {},
+  "engines": {
+    "node": ">= 0.4.0"
+  },
+  "licenses": [
+    {
+      "type": "MIT",
+      "url": "http://github.com/cliffano/buildlight/raw/master/LICENSE"
+    }
+  ]
+}
