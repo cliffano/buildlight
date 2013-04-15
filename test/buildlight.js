@@ -5,6 +5,9 @@ var BuildLight = require('../lib/buildlight'),
 buster.testCase('buildlight - buildlight', {
   setUp: function () {
     this.stub(process, 'platform', 'linux');
+    this.stub(UsbLed.prototype, '_find', function () {
+      return '/some/usbled/path/';
+    });
   },
   'should set default colour scheme to RGB': function () {
     var buildLight = new BuildLight();
@@ -37,6 +40,9 @@ buster.testCase('buildlight - buildlight', {
 buster.testCase('buildlight - on', {
   setUp: function () {
     this.stub(process, 'platform', 'linux');
+    this.stub(UsbLed.prototype, '_find', function () {
+      return '/some/usbled/path/';
+    });
   },
   'should switch on all colours using specified driver': function (done) {
     var callCount = 0;
@@ -57,6 +63,9 @@ buster.testCase('buildlight - on', {
 buster.testCase('buildlight - off', {
   setUp: function () {
     this.stub(process, 'platform', 'linux');
+    this.stub(UsbLed.prototype, '_find', function () {
+      return '/some/usbled/path/';
+    });
   },
   'should switch off all colours using specified driver': function (done) {
     var callCount = 0;
@@ -77,14 +86,21 @@ buster.testCase('buildlight - off', {
 buster.testCase('buildlight - colours', {
   setUp: function () {
     this.stub(process, 'platform', 'linux');
+    this.stub(UsbLed.prototype, '_find', function () {
+      return '/some/usbled/path/';
+    });
   },
   'should switch off all colours in the scheme then switch on the selected colour': function (done) {
-    // TODO: check off
+    var offCallCount = 0;
     this.stub(UsbLed.prototype, 'on', function (colour) {
+      assert.equals(offCallCount, 1);
       assert.equals(colour, 'blue');
       done();
     });
     var buildLight = new BuildLight({ scheme: [ 'red', 'blue' ]});
+    buildLight.off = function () {
+      offCallCount += 1;
+    };
     buildLight.blue();
   }
 });
