@@ -1,6 +1,6 @@
 {
   "name": "buildlight",
-  "description": "Delcom USB Visual Signal Indicator library in Node.js",
+  "description": "Node.js library for Delcom USB Visual Signal Indicator",
   "keywords": [
     "buildlight",
     "delcom",
