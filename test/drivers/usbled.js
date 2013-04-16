@@ -56,13 +56,23 @@ buster.testCase('usbled - _find', {
   },
   'should return path with newer version when there are multiple versions of usbled installed': function () {
     this.mockFs.expects('existsSync').once().withExactArgs('/sys/bus/usb/drivers/usbled/').returns(true);
-    this.mockFs.expects('readdirSync').once().withExactArgs('/sys/bus/usb/drivers/usbled/').returns(['2-1.8:1.0', '2-0.1:2.3']);
+    this.mockFs.expects('readdirSync').once().withExactArgs('/sys/bus/usb/drivers/usbled/').returns(['2-1.8:1.0', 'bind', '2-0.1:2.3']);
     this.usbLed = new UsbLed();
     assert.equals(this.usbLed.path, '/sys/bus/usb/drivers/usbled/2-1.8:1.0');
   },
-  'should throw an error when there is no usbled version installed': function (done) {
+  'should throw an error when usbled exists but there is no version': function (done) {
     this.mockFs.expects('existsSync').once().withExactArgs('/sys/bus/usb/drivers/usbled/').returns(true);
     this.mockFs.expects('readdirSync').once().withExactArgs('/sys/bus/usb/drivers/usbled/').returns([]);
+    try {
+      new UsbLed();
+    } catch (e) {
+      assert.equals(e.message, 'Unable to find USB LED driver installation.');
+      done();
+    }
+  },
+  'should throw an error when there is no usbled version installed': function (done) {
+    this.mockFs.expects('existsSync').once().withExactArgs('/sys/bus/usb/drivers/usbled/').returns(true);
+    this.mockFs.expects('readdirSync').once().withExactArgs('/sys/bus/usb/drivers/usbled/').returns(['bind', 'uevent', 'unbind']);
     try {
       new UsbLed();
     } catch (e) {
