@@ -24,7 +24,9 @@
     "lib": "./lib",
     "test": "./test"
   },
-  "dependencies": {},
+  "dependencies": {
+    "async": "0.2.9"
+  },
   "devDependencies": {
     "buster": "0.6.12"
   },

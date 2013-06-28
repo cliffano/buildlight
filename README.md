@@ -31,3 +31,11 @@ Usage
     // to use custom colour scheme
     buildLight = new BuildLight({ scheme: ['red', 'green', 'yellow'] });
     buildLight.yellow();
+
+    // blinks with red colour then switch on green when unblink is called 5 seconds later
+    buildLight.blink('red', function (err) {
+      buildLight.green();
+    });
+    setTimeout(function () {
+      buildLight.unblink();
+    }, 5000);
