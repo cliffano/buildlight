@@ -34,7 +34,9 @@ Usage
 
     // blinks with red colour then switch on green when unblink is called 5 seconds later
     buildLight.blink('red', function (err) {
-      buildLight.green();
+      if (!err) {
+        buildLight.green();
+      }
     });
     setTimeout(function () {
       buildLight.unblink();
