@@ -34,6 +34,14 @@ buster.testCase('buildlight - buildlight', {
     var buildLight = new BuildLight({ scheme: [ 'cyan', 'magenta' ] });
     assert.isFunction(buildLight.cyan);
     assert.isFunction(buildLight.magenta);
+  },
+  'should set default interval': function () {
+    var buildLight = new BuildLight();
+    assert.isNumber(buildLight.interval);
+  },
+  'should set custom interval if specified': function () {
+    var buildLight = new BuildLight({ interval: 123 });
+    assert.equals(buildLight.interval, 123);
   }
 });
 
@@ -102,5 +110,57 @@ buster.testCase('buildlight - colours', {
       offCallCount += 1;
     };
     buildLight.blue();
+  }
+});
+
+buster.testCase('buildlight - blink', {
+  setUp: function () {
+    this.stub(process, 'platform', 'linux');
+    this.stub(UsbLed.prototype, '_find', function () {
+      return '/some/usbled/path/';
+    });
+    this.buildLight = new BuildLight({ interval: 0 });
+  },
+  'should set switch specified colour on then off after unblink is called': function (done) {
+    this.timeout = 500;
+    var self = this;
+    this.buildLight.red = this.stub();
+    this.buildLight.off = this.stub();
+    this.buildLight.blink('red', function (err) {
+      assert.equals(self.buildLight.red.callCount, 1);
+      assert.equals(self.buildLight.off.callCount, 1);
+      done();
+    });
+    setTimeout(function () {
+      self.buildLight.unblink();
+    }, 0);
+  },
+  'should set switch all colours on then off after unblink is called': function (done) {
+    this.timeout = 500;
+    var self = this;
+    this.buildLight.on = this.stub();
+    this.buildLight.off = this.stub();
+    this.buildLight.blink(function (err) {
+      assert.equals(self.buildLight.on.callCount, 1);
+      assert.equals(self.buildLight.off.callCount, 1);
+      done();
+    });
+    setTimeout(function () {
+      self.buildLight.unblink();
+    }, 0);
+  }
+});
+
+buster.testCase('buildlight - unblink', {
+  setUp: function () {
+    this.stub(process, 'platform', 'linux');
+    this.stub(UsbLed.prototype, '_find', function () {
+      return '/some/usbled/path/';
+    });
+  },
+  'should set continuous to false': function () {
+    var buildLight = new BuildLight();
+    buildLight.unblink();
+    assert.isFalse(buildLight.continuous);
   }
 });
