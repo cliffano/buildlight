@@ -1,4 +1,12 @@
-BuildLight [![Build Status](https://secure.travis-ci.org/cliffano/buildlight.png?branch=master)](http://travis-ci.org/cliffano/buildlight) [![Dependencies Status](https://david-dm.org/cliffano/buildlight.png)](http://david-dm.org/cliffano/buildlight) [![Published Version](https://badge.fury.io/js/buildlight.png)](http://badge.fury.io/js/buildlight)
+<img align="right" src="https://raw.github.com/cliffano/buildlight/master/avatar.jpg" alt="Avatar"/>
+
+[![Build Status](https://secure.travis-ci.org/cliffano/buildlight.png?branch=master)](http://travis-ci.org/cliffano/buildlight)
+[![Dependencies Status](https://david-dm.org/cliffano/buildlight.png)](http://david-dm.org/cliffano/buildlight)
+[![Published Version](https://badge.fury.io/js/buildlight.png)](http://badge.fury.io/js/buildlight)
+<br/>
+[![npm Badge](https://nodei.co/npm/buildlight.png)](http://npmjs.org/package/buildlight)
+
+BuildLight
 ----------
 <a href="http://www.delcomproducts.com/products_usblmp.asp"><img align="right" src="https://raw.github.com/cliffano/buildlight/master/avatar.jpg" alt="Avatar"/></a>
 
