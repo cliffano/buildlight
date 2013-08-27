@@ -158,9 +158,11 @@ buster.testCase('buildlight - unblink', {
       return '/some/usbled/path/';
     });
   },
-  'should set continuous to false': function () {
-    var buildLight = new BuildLight();
-    buildLight.unblink();
-    assert.isFalse(buildLight.continuous);
+  'should set continuous to false': function (done) {
+    var buildLight = new BuildLight({ interval: 1 });
+    buildLight.unblink(function () {
+      assert.isFalse(buildLight.continuous);
+      done();
+    });
   }
 });

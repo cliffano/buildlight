@@ -39,12 +39,14 @@ Usage
     buildLight = new BuildLight({ scheme: ['red', 'green', 'yellow'] });
     buildLight.yellow();
 
-    // blinks with red colour then switch on green when unblink is called 5 seconds later
+    // blinks with green colour then switch on blue when unblink is called 5 seconds later
     buildLight.blink('green', function (err) {
       if (err) {
         buildLight.red();
       }
     });
     setTimeout(function () {
-      buildLight.unblink();
+      buildLight.unblink(function () {
+        buildLight.blue();
+      });
     }, 5000);
