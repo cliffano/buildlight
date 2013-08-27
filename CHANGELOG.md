@@ -1,5 +1,5 @@
 ### 0.0.4
-*
+* Off no longer enforces unblink, client should control when to unblink
 
 ### 0.0.3
 * Stop blinking when off is called
