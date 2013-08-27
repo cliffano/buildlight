@@ -1,3 +1,6 @@
+### 0.0.5
+*
+
 ### 0.0.4
 * Unblink waits for interval to allow in-progress blink to finish
 * Off no longer enforces unblink, client should control when to unblink
