@@ -88,6 +88,17 @@ buster.testCase('buildlight - off', {
     });
     var buildLight = new BuildLight({ scheme: [ 'red', 'blue' ]});
     buildLight.off();
+  },
+  'should unblink when buildlight is blinking': function (done) {
+    var callCount = 0;
+    this.stub(UsbLed.prototype, 'off', function (colour) {
+      assert.equals(colour, 'blue');
+      assert.equals(buildLight.continuous, false);
+      done();
+    });
+    var buildLight = new BuildLight({ scheme: [ 'blue' ]});
+    buildLight.continuous = true;
+    buildLight.off();
   }
 });
 
