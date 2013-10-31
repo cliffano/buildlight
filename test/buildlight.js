@@ -1,6 +1,8 @@
 var BuildLight = require('../lib/buildlight'),
-  buster = require('buster'),
-  UsbLed = require('../lib/drivers/usbled');
+  buster = require('buster-node'),
+  referee = require('referee'),
+  UsbLed = require('../lib/drivers/usbled'),
+  assert = referee.assert;
 
 buster.testCase('buildlight - buildlight', {
   setUp: function () {

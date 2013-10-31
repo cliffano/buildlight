@@ -1,6 +1,8 @@
-var buster = require('buster'),
+var buster = require('buster-node'),
   fs = require('fs'),
-  UsbLed = require('../../lib/drivers/usbled');
+  referee = require('referee'),
+  UsbLed = require('../../lib/drivers/usbled'),
+  assert = referee.assert;
 
 buster.testCase('usbled - usbled', {
   setUp: function () {

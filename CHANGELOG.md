@@ -1,5 +1,6 @@
 ### 0.0.5
-*
+* Change test lib to buster-node + referee
+* Set min node engine to >= v0.8.0 
 
 ### 0.0.4
 * Unblink waits for interval to allow in-progress blink to finish
