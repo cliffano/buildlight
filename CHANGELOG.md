@@ -1,5 +1,5 @@
 ### 0.0.6-pre
-*
+* Add optional platform override
 
 ### 0.0.5
 * Change test lib to buster-node + referee
