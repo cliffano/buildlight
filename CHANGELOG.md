@@ -1,5 +1,6 @@
-### 0.0.6-pre
+### 0.1.0-pre
 * Add optional platform override
+* Set min node engine to >= 0.10.0
 
 ### 0.0.5
 * Change test lib to buster-node + referee
