@@ -1,4 +1,7 @@
-### 0.1.0-pre
+### 0.1.1-pre
+*
+
+### 0.1.0
 * Add optional platform override
 * Set min node engine to >= 0.10.0
 
