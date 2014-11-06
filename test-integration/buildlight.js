@@ -4,6 +4,9 @@ var BuildLight = require('../lib/buildlight'),
   assert = referee.assert;
 
 buster.testCase('buildlight - buildlight', {
+  setUp: function () {
+    this.mock({});
+  },
   'should throw error when platform is not supported or usbled is not available, otherwise return buildlight': function () {
     try {
       var buildLight = new BuildLight();
