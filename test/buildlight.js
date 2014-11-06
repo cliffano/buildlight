@@ -15,32 +15,37 @@ buster.testCase('buildlight - buildlight', {
     assert.equals(buildLight.scheme, [ 'red', 'green', 'blue' ]);
   },
   'should allow custom colour scheme': function () {
-    var buildLight = new BuildLight({ scheme: [ 'cyan', 'magenta' ], platform: 'linux' });
+    this.stub(process, 'platform', 'linux');
+    var buildLight = new BuildLight({ scheme: [ 'cyan', 'magenta' ] });
     assert.equals(buildLight.scheme, [ 'cyan', 'magenta' ]);
   },
   'should set usbled driver when platform is linux': function () {
-    var buildLight = new BuildLight({ scheme: [ 'cyan', 'magenta' ], platform: 'linux' });
+    this.stub(process, 'platform', 'linux');
+    var buildLight = new BuildLight({ scheme: [ 'cyan', 'magenta' ] });
     assert.isObject(buildLight.driver);
   },
   'should throw an error when platform is not supported': function (done) {
+    this.stub(process, 'platform', 'someplatform');
     try {
-      new BuildLight({ platform: 'someplatform' });
+      new BuildLight();
     } catch (e) {
       assert.equals(e.message, 'Unsupported platform someplatform');
       done();
     }
   },
   'should set colour methods based on colour scheme': function () {
-    var buildLight = new BuildLight({ scheme: [ 'cyan', 'magenta' ], platform: 'linux' });
+    this.stub(process, 'platform', 'linux');
+    var buildLight = new BuildLight({ scheme: [ 'cyan', 'magenta' ] });
     assert.isFunction(buildLight.cyan);
     assert.isFunction(buildLight.magenta);
   },
   'should set default interval': function () {
-    var buildLight = new BuildLight({ platform: 'linux' });
+    var buildLight = new BuildLight();
     assert.isNumber(buildLight.interval);
   },
   'should set custom interval if specified': function () {
-    var buildLight = new BuildLight({ interval: 123, platform: 'linux' });
+    this.stub(process, 'platform', 'linux');
+    var buildLight = new BuildLight({ interval: 123 });
     assert.equals(buildLight.interval, 123);
   }
 });
@@ -62,7 +67,8 @@ buster.testCase('buildlight - on', {
       }
       callCount += 1;
     });
-    var buildLight = new BuildLight({ scheme: [ 'red', 'blue' ], platform: 'linux' });
+    this.stub(process, 'platform', 'linux');
+    var buildLight = new BuildLight({ scheme: [ 'red', 'blue' ] });
     buildLight.on();
   }
 });
@@ -84,7 +90,8 @@ buster.testCase('buildlight - off', {
       }
       callCount += 1;
     });
-    var buildLight = new BuildLight({ scheme: [ 'red', 'blue' ], platform: 'linux' });
+    this.stub(process, 'platform', 'linux');
+    var buildLight = new BuildLight({ scheme: [ 'red', 'blue' ] });
     buildLight.off();
   }
 });
@@ -102,7 +109,8 @@ buster.testCase('buildlight - colours', {
       assert.equals(colour, 'blue');
       done();
     });
-    var buildLight = new BuildLight({ scheme: [ 'red', 'blue' ], platform: 'linux' });
+    this.stub(process, 'platform', 'linux');
+    var buildLight = new BuildLight({ scheme: [ 'red', 'blue' ] });
     buildLight.off = function () {
       offCallCount += 1;
     };
@@ -115,7 +123,8 @@ buster.testCase('buildlight - blink', {
     this.stub(UsbLed.prototype, '_find', function () {
       return '/some/usbled/path/';
     });
-    this.buildLight = new BuildLight({ interval: 0, platform: 'linux' });
+    this.stub(process, 'platform', 'linux');
+    this.buildLight = new BuildLight({ interval: 0 });
   },
   'should set switch specified colour on then off after unblink is called': function (done) {
     this.timeout = 500;
@@ -154,7 +163,8 @@ buster.testCase('buildlight - unblink', {
     });
   },
   'should set continuous to false': function (done) {
-    var buildLight = new BuildLight({ interval: 1, platform: 'linux' });
+    this.stub(process, 'platform', 'linux');
+    var buildLight = new BuildLight({ interval: 1 });
     buildLight.unblink(function () {
       assert.isFalse(buildLight.continuous);
       done();
