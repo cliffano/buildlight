@@ -6,6 +6,7 @@ var BuildLight = require('../lib/buildlight'),
 
 buster.testCase('buildlight - buildlight', {
   setUp: function () {
+    this.mock({});
     this.stub(UsbLed.prototype, '_find', function () {
       return '/some/usbled/path/';
     });
@@ -52,6 +53,7 @@ buster.testCase('buildlight - buildlight', {
 
 buster.testCase('buildlight - on', {
   setUp: function () {
+    this.mock({});
     this.stub(UsbLed.prototype, '_find', function () {
       return '/some/usbled/path/';
     });
@@ -75,6 +77,7 @@ buster.testCase('buildlight - on', {
 
 buster.testCase('buildlight - off', {
   setUp: function () {
+    this.mock({});
     this.stub(UsbLed.prototype, '_find', function () {
       return '/some/usbled/path/';
     });
@@ -98,6 +101,7 @@ buster.testCase('buildlight - off', {
 
 buster.testCase('buildlight - colours', {
   setUp: function () {
+    this.mock({});
     this.stub(UsbLed.prototype, '_find', function () {
       return '/some/usbled/path/';
     });
@@ -120,6 +124,7 @@ buster.testCase('buildlight - colours', {
 
 buster.testCase('buildlight - blink', {
   setUp: function () {
+    this.mock({});
     this.stub(UsbLed.prototype, '_find', function () {
       return '/some/usbled/path/';
     });
@@ -158,6 +163,7 @@ buster.testCase('buildlight - blink', {
 
 buster.testCase('buildlight - unblink', {
   setUp: function () {
+    this.mock({});
     this.stub(UsbLed.prototype, '_find', function () {
       return '/some/usbled/path/';
     });
