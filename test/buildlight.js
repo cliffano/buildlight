@@ -16,37 +16,36 @@ buster.testCase('buildlight - buildlight', {
     assert.equals(buildLight.scheme, [ 'red', 'green', 'blue' ]);
   },
   'should allow custom colour scheme': function () {
-    this.stub(process, 'platform', 'linux');
-    var buildLight = new BuildLight({ scheme: [ 'cyan', 'magenta' ] });
+    var buildLight = new BuildLight({ platform: 'linux', scheme: [ 'cyan', 'magenta' ] });
     assert.equals(buildLight.scheme, [ 'cyan', 'magenta' ]);
   },
   'should set usbled driver when platform is linux': function () {
-    this.stub(process, 'platform', 'linux');
-    var buildLight = new BuildLight({ scheme: [ 'cyan', 'magenta' ] });
+    var buildLight = new BuildLight({ platform: 'linux', scheme: [ 'cyan', 'magenta' ] });
     assert.isObject(buildLight.driver);
   },
   'should throw an error when platform is not supported': function (done) {
-    this.stub(process, 'platform', 'someplatform');
     try {
-      new BuildLight();
+      new BuildLight({ platform: 'someplatform' });
     } catch (e) {
       assert.equals(e.message, 'Unsupported platform someplatform');
       done();
     }
   },
   'should set colour methods based on colour scheme': function () {
-    this.stub(process, 'platform', 'linux');
-    var buildLight = new BuildLight({ scheme: [ 'cyan', 'magenta' ] });
+    var buildLight = new BuildLight({ platform: 'linux', scheme: [ 'cyan', 'magenta' ] });
     assert.isFunction(buildLight.cyan);
     assert.isFunction(buildLight.magenta);
   },
-  'should set default interval': function () {
+  'should set default opts': function () {
+    this.stub(BuildLight.prototype, '_driver', function () {});
+    this.stub(BuildLight.prototype, '_colours', function () {});
     var buildLight = new BuildLight();
+    assert.defined(buildLight.scheme);
     assert.isNumber(buildLight.interval);
+    assert.defined(buildLight.platform);
   },
   'should set custom interval if specified': function () {
-    this.stub(process, 'platform', 'linux');
-    var buildLight = new BuildLight({ interval: 123 });
+    var buildLight = new BuildLight({ platform: 'linux', interval: 123 });
     assert.equals(buildLight.interval, 123);
   }
 });
@@ -69,8 +68,7 @@ buster.testCase('buildlight - on', {
       }
       callCount += 1;
     });
-    this.stub(process, 'platform', 'linux');
-    var buildLight = new BuildLight({ scheme: [ 'red', 'blue' ] });
+    var buildLight = new BuildLight({ platform: 'linux', scheme: [ 'red', 'blue' ] });
     buildLight.on();
   }
 });
@@ -93,8 +91,7 @@ buster.testCase('buildlight - off', {
       }
       callCount += 1;
     });
-    this.stub(process, 'platform', 'linux');
-    var buildLight = new BuildLight({ scheme: [ 'red', 'blue' ] });
+    var buildLight = new BuildLight({ platform: 'linux', scheme: [ 'red', 'blue' ] });
     buildLight.off();
   }
 });
@@ -113,8 +110,7 @@ buster.testCase('buildlight - colours', {
       assert.equals(colour, 'blue');
       done();
     });
-    this.stub(process, 'platform', 'linux');
-    var buildLight = new BuildLight({ scheme: [ 'red', 'blue' ] });
+    var buildLight = new BuildLight({ platform: 'linux', scheme: [ 'red', 'blue' ] });
     buildLight.off = function () {
       offCallCount += 1;
     };
@@ -128,8 +124,7 @@ buster.testCase('buildlight - blink', {
     this.stub(UsbLed.prototype, '_find', function () {
       return '/some/usbled/path/';
     });
-    this.stub(process, 'platform', 'linux');
-    this.buildLight = new BuildLight({ interval: 0 });
+    this.buildLight = new BuildLight({ platform: 'linux', interval: 0 });
   },
   'should set switch specified colour on then off after unblink is called': function (done) {
     this.timeout = 500;
@@ -169,8 +164,7 @@ buster.testCase('buildlight - unblink', {
     });
   },
   'should set continuous to false': function (done) {
-    this.stub(process, 'platform', 'linux');
-    var buildLight = new BuildLight({ interval: 1 });
+    var buildLight = new BuildLight({ platform: 'linux', interval: 1 });
     buildLight.unblink(function () {
       assert.isFalse(buildLight.continuous);
       done();

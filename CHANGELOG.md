@@ -1,5 +1,5 @@
 ### 0.1.1-pre
-*
+* Move optional platform override to constructor
 
 ### 0.1.0
 * Add optional platform override
