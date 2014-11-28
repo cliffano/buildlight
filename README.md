@@ -51,3 +51,8 @@ Usage
         buildLight.blue();
       });
     }, 5000);
+
+Colophon
+--------
+
+[Developer's Guide](http://cliffano.github.io/developers_guide.html#nodejs)
