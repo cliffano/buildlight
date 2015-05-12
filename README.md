@@ -1,7 +1,7 @@
 <img align="right" src="https://raw.github.com/cliffano/buildlight/master/avatar.jpg" alt="Avatar"/>
 
-[![Build Status](https://secure.travis-ci.org/cliffano/buildlight.png?branch=master)](http://travis-ci.org/cliffano/buildlight)
-[![Dependencies Status](https://david-dm.org/cliffano/buildlight.png)](http://david-dm.org/cliffano/buildlight)
+[![Build Status](https://img.shields.io/travis/cliffano/buildlight.svg)](http://travis-ci.org/cliffano/buildlight)
+[![Dependencies Status](https://img.shields.io/david/cliffano/buildlight.svg)](http://david-dm.org/cliffano/buildlight)
 [![Coverage Status](https://coveralls.io/repos/cliffano/buildlight/badge.png?branch=master)](https://coveralls.io/r/cliffano/buildlight?branch=master)
 [![Published Version](https://badge.fury.io/js/buildlight.png)](http://badge.fury.io/js/buildlight)
 <br/>
