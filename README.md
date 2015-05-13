@@ -2,8 +2,8 @@
 
 [![Build Status](https://img.shields.io/travis/cliffano/buildlight.svg)](http://travis-ci.org/cliffano/buildlight)
 [![Dependencies Status](https://img.shields.io/david/cliffano/buildlight.svg)](http://david-dm.org/cliffano/buildlight)
-[![Coverage Status](https://coveralls.io/repos/cliffano/buildlight/badge.png?branch=master)](https://coveralls.io/r/cliffano/buildlight?branch=master)
-[![Published Version](https://badge.fury.io/js/buildlight.png)](http://badge.fury.io/js/buildlight)
+[![Coverage Status](https://img.shields.io/coveralls/cliffano/buildlight.svg)](https://coveralls.io/r/cliffano/buildlight?branch=master)
+[![Published Version](https://img.shields.io/npm/v/buildlight.svg)](http://www.npmjs.com/package/buildlight)
 <br/>
 [![npm Badge](https://nodei.co/npm/buildlight.png)](http://npmjs.org/package/buildlight)
 
