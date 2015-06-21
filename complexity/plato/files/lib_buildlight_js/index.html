@@ -1,0 +1,248 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>Plato - lib/buildlight.js</title>
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="">
+  <meta name="author" content="">
+
+  <!--[if lt IE 9]>
+  <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
+  <![endif]-->
+
+  <link href="../../assets/css/vendor/morris.css" rel="stylesheet">
+  <link href="../../assets/css/vendor/bootstrap.css" rel="stylesheet">
+  <link href="../../assets/css/vendor/font-awesome.css" rel="stylesheet">
+  <link href="../../assets/css/vendor/codemirror.css" rel="stylesheet">
+  <link href="../../assets/css/plato.css" rel="stylesheet">
+  <link href="../../assets/css/plato-file.css" rel="stylesheet">
+
+</head>
+
+<body>
+
+<div class="navbar navbar-fixed-top">
+  <div class="container">
+    <a class="navbar-brand" href="http://github.com/es-analysis/plato">Plato on Github</a>
+    <ul class="nav navbar-nav">
+      <li>
+        <a href="../../index.html">Report Home</a>
+      </li>
+    </ul>
+  </div>
+</div>
+
+<div class="jumbotron">
+  <div class="container">
+    <h1>lib/buildlight.js</h1>
+  </div>
+</div>
+
+<div class="container aggregate-stats">
+  <div class="row">
+    <div class="col-md-6">
+      <h2 class="header">Maintainability <a href="http://blogs.msdn.com/b/codeanalysis/archive/2007/11/20/maintainability-index-range-and-meaning.aspx"><i class="icon icon-info-sign" rel="popover" data-placement="top" data-trigger="hover" data-content="A value between 0 and 100 that represents the relative ease of maintaining the code. A high value means better maintainability." data-original-title="Maintainability Index"  data-container="body"></i></a></h2>
+      <p class="stat">78.47</p>
+    </div>
+    <div class="col-md-6">
+      <h2 class="header">Lines of code <i class="icon icon-info-sign" rel="popover" data-placement="top" data-trigger="hover" data-content="Source Lines of Code / Logical Lines of Code" data-original-title="SLOC/LSLOC" data-container="body"></i></h2>
+      <p class="stat">131</p>
+    </div>
+  </div>
+  <div class="row historical">
+    <div class="col-md-6">
+      <p id="chart_historical_maint" class="chart"></p>
+    </div>
+    <div class="col-md-6">
+      <p id="chart_historical_sloc" class="chart"></p>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-md-6">
+      <h2 class="header">Difficulty  <a href="http://en.wikipedia.org/wiki/Halstead_complexity_measures"><i class="icon icon-info-sign" rel="popover" data-placement="top" data-trigger="hover" data-content="The difficulty measure is related to the difficulty of the program to write or understand." data-original-title="Difficulty" data-container="body"></i></a></h2>
+      <p class="stat">30.86</p>
+    </div>
+    <div class="col-md-6">
+      <h2 class="header">Estimated Errors  <a href="http://en.wikipedia.org/wiki/Halstead_complexity_measures"><i class="icon icon-info-sign" rel="popover" data-placement="top" data-trigger="hover" data-content="Halstead's delivered bugs is an estimate for the number of errors in the implementation." data-original-title="Delivered Bugs" data-container="body"></i></a></h2>
+      <p class="stat">0.61</p>
+    </div>
+  </div>
+</div>
+
+<div class="container charts">
+  <div class="row">
+    <h2 class="header">Function weight</h2>
+  </div>
+  <div class="row">
+    <div class="col-md-6">
+      <h3 class="chart-header">By Complexity <a href="http://en.wikipedia.org/wiki/Cyclomatic_complexity"><i class="icon icon-info-sign" rel="popover" data-placement="top" data-trigger="hover" data-content="This metric counts the number of distinct paths through a block of code. Lower values are better." data-original-title="Cyclomatic Complexity" data-container="body"></i></a></h3>
+      <div id="fn-by-complexity" class="stat"></div>
+    </div>
+    <div class="col-md-6">
+      <h3 class="chart-header">By SLOC  <i class="icon icon-info-sign" rel="popover" data-placement="top" data-trigger="hover" data-content="Source Lines of Code / Logical Lines of Code" data-original-title="SLOC/LSLOC" data-container="body"></i></h3>
+      <div id="fn-by-sloc" class="stat"></div>
+    </div>
+  </div>
+</div>
+
+<div class="container">
+  <div class="row">
+    <textarea id="file-source" class="col-md-12">var async = require(&#039;async&#039;);
+
+/**
+ *  class BuildLight
+ * 
+ * @param {Object} opts: optional
+ * - scheme: color scheme array, defaults to [ &#039;red&#039;, &#039;green&#039;, &#039;blue&#039; ]
+ *           scheme allows flexibility to use BuildLight with various Delcom devices (RGB, RGY)
+ * - usbled: path to usbled installation, if not specified then it will try to
+ *           find a usbled installation at /sys/bus/usb/drivers/usbled/
+ * - interval: continuous task (e.g. blink) interval in milliseconds
+ *             switching between displaying color and no color, default to 500ms
+ */
+function BuildLight(opts) {
+  const RGB = [ &#039;red&#039;, &#039;green&#039;, &#039;blue&#039; ];
+  const INTERVAL = 500;
+
+  this.opts = opts || {};
+  this.scheme = this.opts.scheme || RGB;
+  this.interval = this.opts.interval || INTERVAL;
+  this.platform = this.opts.platform || process.platform;
+
+  this._driver();
+  this._colours();
+}
+
+/**
+ * Switch on all colours in the color scheme.
+ */
+BuildLight.prototype.on = function () {
+  var self = this;
+  this.scheme.forEach(function (colour) {
+    self.driver.on(colour);
+  });
+};
+
+/**
+ * Switch off all colours in the color scheme.
+ */
+BuildLight.prototype.off = function () {
+  var self = this;
+  this.scheme.forEach(function (colour) {
+    self.driver.off(colour);
+  });
+};
+
+/**
+ * Blink the specified colour.
+ *
+ * @param {String} colour: a colour from the scheme, default scheme either red, green, or blue
+ *   if no colour is specified then default to display all colours from the scheme
+ * @param {Function} cb: callback with error arg if there&#039;s any interruption
+ */
+BuildLight.prototype.blink = function (colour, cb) {
+  if (!cb) {
+    cb = colour;
+    colour = null;
+  }
+
+  var self = this;
+  this.continuous = true;
+
+  function condition() {
+    return self.continuous;
+  }
+
+  function task(cb) {
+
+    // only timeout if continuous, otherwise finish off a.s.a.p
+    function _do(cb) {
+      if (self.continuous) {
+        setTimeout(cb, self.interval);
+      } else {
+        cb();
+      }
+    }
+
+    self[colour || &#039;on&#039;]();
+    _do(function () {
+      self.off();
+      _do(cb);
+    });
+  }
+
+  async.whilst(condition, task, cb);
+};
+
+/**
+ * Stop blinking.
+ * Wait for interval before calling callback to allow
+ * in-progress blink to finish.
+ * 
+ * @param {Function} cb: callback with error arg if there&#039;s any interruption
+ */
+BuildLight.prototype.unblink = function (cb) {
+  this.continuous = false;
+  setTimeout(cb, this.interval);
+};
+
+/**
+ * Select a driver to use based on platform.
+ * BuildLight currently supports Linux platform only, contributions for other platforms are welcome.
+ * - Linux platform uses usbled driver.
+ */
+BuildLight.prototype._driver = function () {
+  if (this.platform === &#039;linux&#039;) {
+    this.driver = new (require(&#039;./drivers/usbled&#039;))(this.opts.usbled);
+  } else {
+    throw new Error(&#039;Unsupported platform &#039; + this.platform);
+  }
+};
+
+/**
+ * Initialise colour method based on colour scheme.
+ * If scheme is [ &#039;red&#039;, &#039;green&#039;, &#039;blue&#039; ], then you use:
+ * buildLight.red();
+ * buildLight.green();
+ * buildLight.blue();
+ * Each colour method will switch off all colours, then switch on one particular colour.
+ */
+BuildLight.prototype._colours = function () {
+  var self = this;
+  this.scheme.forEach(function (colour) {
+    BuildLight.prototype[colour] = function () {
+      self.off();
+      self.driver.on(colour);
+    };
+  });
+};
+
+module.exports = BuildLight;</textarea>
+  </div>
+</div>
+
+<footer class="footer">
+  <div class="container">
+    <p>.</p>
+  </div>
+</footer>
+
+<script type="text/html" id="complexity-popover-template">
+  <div class="complexity-notice">
+    Complexity : {{ complexity.cyclomatic }} <br>
+    Length : {{ complexity.halstead.length }} <br>
+    Difficulty : {{ complexity.halstead.difficulty.toFixed(2) }} <br>
+    Est # bugs : {{ complexity.halstead.bugs.toFixed(2) }}<br>
+  </div>
+</script>
+
+<script type="text/javascript" src="../../assets/scripts/bundles/core-bundle.js"></script>
+<script type="text/javascript" src="../../assets/scripts/bundles/codemirror.js"></script>
+<script type="text/javascript" src="../../assets/scripts/codemirror.markpopovertext.js"></script>
+<script type="text/javascript" src="report.js"></script>
+<script type="text/javascript" src="report.history.js"></script>
+<script type="text/javascript" src="../../assets/scripts/plato-file.js"></script>
+</body>
+</html>
