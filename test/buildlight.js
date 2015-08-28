@@ -1,6 +1,7 @@
 var BuildLight = require('../lib/buildlight'),
   buster = require('buster-node'),
   referee = require('referee'),
+  UsbHid = require('../lib/drivers/usbhid'),
   UsbLed = require('../lib/drivers/usbled'),
   assert = referee.assert;
 
@@ -9,6 +10,9 @@ buster.testCase('buildlight - buildlight', {
     this.mock({});
     this.stub(UsbLed.prototype, '_find', function () {
       return '/some/usbled/path/';
+    });
+    this.stub(UsbHid.prototype, '_find', function () {
+      return {};
     });
   },
   'should set default colour scheme to RGB': function () {
@@ -21,6 +25,10 @@ buster.testCase('buildlight - buildlight', {
   },
   'should set usbled driver when platform is linux': function () {
     var buildLight = new BuildLight({ platform: 'linux', scheme: [ 'cyan', 'magenta' ] });
+    assert.isObject(buildLight.driver);
+  },
+  'should set usbhid driver when platform is darwin': function () {
+    var buildLight = new BuildLight({ platform: 'darwin', scheme: [ 'cyan', 'magenta' ] });
     assert.isObject(buildLight.driver);
   },
   'should throw an error when platform is not supported': function (done) {

@@ -1,5 +1,5 @@
 ### 0.1.2-pre
-*
+* Add usbhid driver
 
 ### 0.1.1
 * Move optional platform override to constructor

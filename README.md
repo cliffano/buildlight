@@ -12,12 +12,12 @@ BuildLight
 
 BuildLight is a node.js library for [Delcom USB Visual Indicator](http://www.delcomproducts.com/products_usblmp.asp).
 
-This is handy when you want to control Delcom build light device from node.js . It currently only supports Linux platform via usbled. Contributions for Windows and OS X are welcome.
+This is handy when you want to control Delcom build light device from node.js . It currently only supports Linux platform via usbled and OS X via usbhid. Contributions for Windows are welcome.
 
 Installation
 ------------
 
-    npm install buildlight 
+    npm install buildlight
 
 Usage
 -----
