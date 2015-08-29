@@ -13,6 +13,7 @@ buster.testCase('usbhid - usbhid', {
     var devices = [
       { vendorId: 0x0fc5, productId: 0xb080, path: 'somepath' }
     ];
+    this.stub(this.mockHid.HID);
     this.mockHid.expects('HID').once().withExactArgs('somepath').returns(devices[0]);
     this.mockHid.expects('devices').once().withExactArgs().returns(devices);
     var usbhid = new UsbHid();
@@ -52,31 +53,42 @@ buster.testCase('usbhid - on off', {
   setUp: function () {
     function mockWrite(data) {
     }
-    var devices = [
-      { vendorId: 0x0fc5, productId: 0xb080, path: 'somepath', write: mockWrite }
-    ];
-
-    this.mockHid = this.mock(hid);
-    this.mockHid.expects('HID').once().withExactArgs('somepath').returns(devices[0]);
-    this.mockHid.expects('devices').once().withExactArgs().returns(devices);
-
-    this.usbHid = new UsbHid('/some/path');
+    this.mockDevice = { vendorId: 0x0fc5, productId: 0xb080, path: 'somepath', write: mockWrite };
   },
   'on should write correct data based on colour': function (done) {
-    this.usbHid._write = function(data) {
+    var self = this;
+    this.stub(UsbHid.prototype, '_find', function (vendorId, productId) {
+      return self.mockDevice;
+    });
+    var usbHid = new UsbHid('/some/path');
+    usbHid._write = function(data) {
       assert.equals(data, '\x02');
       done();
     };
-    this.usbHid.on('red');
+    usbHid.on('red');
   },
   'off should write correct data based for switching off colours': function (done) {
-    this.usbHid._write = function(data) {
+    var self = this;
+    this.stub(UsbHid.prototype, '_find', function (vendorId, productId) {
+      return self.mockDevice;
+    });
+    var usbHid = new UsbHid('/some/path');
+    usbHid._write = function(data) {
       assert.equals(data, '\x00');
       done();
     };
-    this.usbHid.off('red');
+    usbHid.off('red');
   },
-  'write should write data to device': function () {
-    this.usbHid._write('\x02');
+  'write should write data to device': function (done) {
+    function mockWrite(data) {
+      assert.isArray(data);
+      done();
+    }
+    var mockDevice = { vendorId: 0x0fc5, productId: 0xb080, path: 'somepath', write: mockWrite };
+    this.stub(UsbHid.prototype, '_find', function (vendorId, productId) {
+      return mockDevice;
+    });
+    var usbHid = new UsbHid('/some/path');
+    usbHid._write('\x02');
   }
 });
