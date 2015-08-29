@@ -8,6 +8,7 @@ node_js:
 before_install:
   - npm update -g npm
   - npm install -g bob coveralls --loglevel error
+  - sudo apt-get update
   - sudo apt-get install libudev-dev libusb-1.0-0-dev
 script:
   - bob build
