@@ -8,7 +8,7 @@ node_js:
 before_install:
   - npm update -g npm
   - npm install -g bob coveralls --loglevel error
-  - sudo apt-get install libusb-dev
+  - sudo apt-get install libusb-1.0-0-dev
 script:
   - bob build
   - cat .bob/coverage/buster-istanbul/lcov.info | coveralls
