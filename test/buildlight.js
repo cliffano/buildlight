@@ -27,15 +27,15 @@ buster.testCase('buildlight - buildlight', {
     var buildLight = new BuildLight({ platform: 'linux', scheme: [ 'cyan', 'magenta' ] });
     assert.isObject(buildLight.driver);
   },
-  'should set usbhid driver when platform is darwin': function () {
-    var buildLight = new BuildLight({ platform: 'darwin', scheme: [ 'cyan', 'magenta' ] });
+  'should set usbhid driver when gen is 2': function () {
+    var buildLight = new BuildLight({ platform: 'darwin', scheme: [ 'cyan', 'magenta' ], gen: 2 });
     assert.isObject(buildLight.driver);
   },
   'should throw an error when platform is not supported': function (done) {
     try {
       new BuildLight({ platform: 'someplatform' });
     } catch (e) {
-      assert.equals(e.message, 'Unsupported platform someplatform');
+      assert.equals(e.message, 'Unsupported platform someplatform with device generation 1');
       done();
     }
   },
@@ -51,6 +51,7 @@ buster.testCase('buildlight - buildlight', {
     assert.defined(buildLight.scheme);
     assert.isNumber(buildLight.interval);
     assert.defined(buildLight.platform);
+    assert.defined(buildLight.gen);
   },
   'should set custom interval if specified': function () {
     var buildLight = new BuildLight({ platform: 'linux', interval: 123 });
