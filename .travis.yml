@@ -5,13 +5,11 @@ node_js:
   - "0.10"
   - "0.12"
   - iojs
+os:
+  - osx
 before_install:
   - npm update -g npm
   - npm install -g bob coveralls --loglevel error
-  - sudo apt-get -y remove "^postgresql.*"
-  - sudo apt-get -y update
-  - sudo apt-get -y dist-upgrade -o Dpkg::Options::="--force-confdef" -o Dpkg::Options::="--force-confold"
-  - sudo apt-get -y install libudev-dev libusb-dev libusb-1.0-0-dev
 script:
   - bob build
   - cat .bob/coverage/buster-istanbul/lcov.info | coveralls
