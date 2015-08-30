@@ -10,6 +10,8 @@ os:
 before_install:
   - npm update -g npm
   - npm install -g bob coveralls --loglevel error
+  - brew update
+  - brew install libusb
 script:
   - bob build
   - cat .bob/coverage/buster-istanbul/lcov.info | coveralls
