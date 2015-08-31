@@ -1,10 +1,9 @@
 sudo: true
-language: node_js
-node_js:
-  - "0.11"
-  - "0.10"
-  - "0.12"
-  - iojs
+env:
+  - NODE_VERSION="0.10"
+  - NODE_VERSION="0.11"
+  - NODE_VERSION="0.12"
+  - NODE_VERSION="iojs"
 os:
   - osx
 before_install:
@@ -12,6 +11,10 @@ before_install:
   - npm install -g bob coveralls --loglevel error
   - brew update
   - brew install libusb
+  - brew install nvm
+  - nvm install $NODE_VERSION
+  - node --version
+  - npm install
 script:
   - bob build
   - cat .bob/coverage/buster-istanbul/lcov.info | coveralls
