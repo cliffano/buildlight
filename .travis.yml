@@ -7,13 +7,16 @@ env:
 os:
   - osx
 before_install:
-  - npm update -g npm
-  - npm install -g bob coveralls --loglevel error
   - brew update
   - brew install libusb
   - brew install nvm
+  - export NVM_DIR=~/.nvm
+  - source $(brew --prefix nvm)/nvm.sh
   - nvm install $NODE_VERSION
   - node --version
+  - npm --version
+  - npm update -g npm
+  - npm install -g bob coveralls --loglevel error
   - npm install
 script:
   - bob build
