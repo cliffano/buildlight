@@ -1,24 +1,18 @@
-sudo: true
+sudo: false
+language: node_js
+node_js:
+  - "4.4"
+  - "6.3"
 env:
-  - NODE_VERSION="0.10"
-  - NODE_VERSION="0.11"
-  - NODE_VERSION="0.12"
-  - NODE_VERSION="4.0"
-  - NODE_VERSION="4.1"
-os:
-  - osx
+  - CXX=g++-4.8
+addons:
+  apt:
+    sources:
+      - ubuntu-toolchain-r-test
+    packages:
+      - g++-4.8
 before_install:
-  - brew update
-  - brew install libusb
-  - brew install nvm
-  - export NVM_DIR=~/.nvm
-  - source $(brew --prefix nvm)/nvm.sh
-  - nvm install $NODE_VERSION
-  - node --version
-  - npm --version
-  - npm update -g npm
   - npm install -g bob coveralls --loglevel error
-  - npm install
 script:
-  - bob build
+  - DEBUG=canihaz bob build
   - cat .bob/coverage/buster-istanbul/lcov.info | coveralls
