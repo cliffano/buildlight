@@ -1,6 +1,7 @@
 ### 0.1.2-pre
 * Add usbhid driver
 * Add device generation option
+* Set min node engine to >= 4.0.0
 
 ### 0.1.1
 * Move optional platform override to constructor
