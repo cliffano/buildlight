@@ -18,4 +18,5 @@ before_install:
   - npm install
 script:
   - bob build
+after_success:
   - cat .bob/coverage/buster-istanbul/lcov.info | coveralls
