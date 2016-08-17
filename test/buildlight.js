@@ -146,7 +146,7 @@ buster.testCase('buildlight - blink', {
       done();
     });
     setTimeout(function () {
-      self.buildLight.unblink();
+      self.buildLight.unblink(function () {});
     }, 0);
   },
   'should set switch all colours on then off after unblink is called': function (done) {
@@ -160,7 +160,7 @@ buster.testCase('buildlight - blink', {
       done();
     });
     setTimeout(function () {
-      self.buildLight.unblink();
+      self.buildLight.unblink(function () {});
     }, 0);
   }
 });
