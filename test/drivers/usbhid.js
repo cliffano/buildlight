@@ -54,6 +54,7 @@ buster.testCase('usbhid - on off', {
     function mockWrite(data) {
     }
     this.mockDevice = { vendorId: 0x0fc5, productId: 0xb080, path: 'somepath', write: mockWrite };
+    this.mock({});
   },
   'on should write correct data based on colour': function (done) {
     var self = this;
