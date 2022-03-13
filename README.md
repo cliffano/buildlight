@@ -60,7 +60,7 @@ Colophon
 Build reports:
 
 * [Code complexity report](http://cliffano.github.io/buildlight/complexity/plato/index.html)
-* [Unit tests report](http://cliffano.github.io/buildlight/test/buster.out)
-* [Test coverage report](http://cliffano.github.io/buildlight/coverage/buster-istanbul/lcov-report/lib/index.html)
-* [Integration tests report](http://cliffano.github.io/buildlight/test-integration/buster.out)
-* [API Documentation](http://cliffano.github.io/buildlight/doc/dox-foundation/index.html)
+* [Unit tests report](http://cliffano.github.io/buildlight/test/mocha.txt)
+* [Test coverage report](http://cliffano.github.io/buildlight/coverage/c8/index.html)
+* [Integration tests report](http://cliffano.github.io/buildlight/test-integration/cmdt.txt)
+* [API Documentation](http://cliffano.github.io/buildlight/doc/jsdoc/index.html)

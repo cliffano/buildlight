@@ -1,3 +1,10 @@
+## Unreleased
+
+### Changed
+- Replace lint type from jshint to eslint
+- Replace coverage from buster-istanbul to c8
+- Replace doc type from dox-foundation to jsdoc
+
 ### 0.1.2-pre
 * Add usbhid driver
 * Add device generation option
