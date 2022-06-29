@@ -62,5 +62,5 @@ Build reports:
 * [Code complexity report](http://cliffano.github.io/buildlight/complexity/plato/index.html)
 * [Unit tests report](http://cliffano.github.io/buildlight/test/mocha.txt)
 * [Test coverage report](http://cliffano.github.io/buildlight/coverage/c8/index.html)
-* [Integration tests report](http://cliffano.github.io/buildlight/test-integration/cmdt.txt)
+* [Integration tests report](http://cliffano.github.io/buildlight/test-integration/mocha.txt)
 * [API Documentation](http://cliffano.github.io/buildlight/doc/jsdoc/index.html)
