@@ -19,7 +19,7 @@
   [32m  [32m✔[39m[0m[90m should switch off all colours in the scheme then switch on the selected colour[0m
 
 [0m  buildlight - blink[0m
-  [32m  [32m✔[39m[0m[90m should set switch specified colour on then off after unblink is called[0m[31m (502ms)[0m
+  [32m  [32m✔[39m[0m[90m should set switch specified colour on then off after unblink is called[0m[31m (504ms)[0m
   [32m  [32m✔[39m[0m[90m should set switch all colours on then off after unblink is called[0m[31m (502ms)[0m
 
 [0m  buildlight - unblink[0m
