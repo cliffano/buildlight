@@ -1,11 +1,11 @@
 <img align="right" src="https://raw.github.com/cliffano/buildlight/master/avatar.jpg" alt="Avatar"/>
 
-[![Build Status](https://img.shields.io/travis/cliffano/buildlight.svg)](http://travis-ci.org/cliffano/buildlight)
+[![Build Status](https://github.com/cliffano/buildlight/workflows/CI/badge.svg)](https://github.com/cliffano/buildlight/actions?query=workflow%3ACI)
+[![Vulnerabilities Status](https://snyk.io/test/github/cliffano/buildlight/badge.svg)](https://snyk.io/test/github/cliffano/buildlight)
 [![Dependencies Status](https://img.shields.io/david/cliffano/buildlight.svg)](http://david-dm.org/cliffano/buildlight)
 [![Coverage Status](https://img.shields.io/coveralls/cliffano/buildlight.svg)](https://coveralls.io/r/cliffano/buildlight?branch=master)
 [![Published Version](https://img.shields.io/npm/v/buildlight.svg)](http://www.npmjs.com/package/buildlight)
 <br/>
-[![npm Badge](https://nodei.co/npm/buildlight.png)](http://npmjs.org/package/buildlight)
 
 BuildLight
 ----------
