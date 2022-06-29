@@ -140,7 +140,7 @@ class UsbLed {
       throw new Error(&#039;Unable to find USB LED driver installation.&#039;);
     }
 
-    var versions = fs.readdirSync(DIR).filter(function (dir) {
+    let versions = fs.readdirSync(DIR).filter(function (dir) {
       return dir.match(/.+:.+/);
     });
 
