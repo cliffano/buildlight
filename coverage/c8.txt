@@ -1,4 +1,4 @@
-test | /opt/hostedtoolcache/node/17.9.1/x64/lib/node_modules/bob/node_modules/.bin/mocha --colors --reporter spec --recursive test/
+test | /opt/hostedtoolcache/node/16.15.1/x64/lib/node_modules/bob/node_modules/.bin/mocha --colors --reporter spec --recursive test/
 
 [0m[0m
 [0m  buildlight - buildlight[0m
@@ -21,7 +21,7 @@ test | /opt/hostedtoolcache/node/17.9.1/x64/lib/node_modules/bob/node_modules/.b
 
 [0m  buildlight - blink[0m
   [32m  [32m✔[39m[0m[90m should set switch specified colour on then off after unblink is called[0m[31m (503ms)[0m
-  [32m  [32m✔[39m[0m[90m should set switch all colours on then off after unblink is called[0m[31m (501ms)[0m
+  [32m  [32m✔[39m[0m[90m should set switch all colours on then off after unblink is called[0m[31m (500ms)[0m
 
 [0m  buildlight - unblink[0m
   [32m  [32m✔[39m[0m[90m should set continuous to false[0m
