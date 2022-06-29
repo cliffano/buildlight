@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <title>buildlight.js - Documentation</title>
+
+    <script src="scripts/prettify/prettify.js"></script>
+    <script src="scripts/prettify/lang-css.js"></script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="https://code.ionicframework.com/ionicons/2.0.1/css/ionicons.min.css">
+    <link type="text/css" rel="stylesheet" href="styles/prettify-tomorrow.css">
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc-default.css">
+</head>
+<body>
+
+<input type="checkbox" id="nav-trigger" class="nav-trigger" />
+<label for="nav-trigger" class="navicon-button x">
+  <div class="navicon"></div>
+</label>
+
+<label for="nav-trigger" class="overlay"></label>
+
+<nav>
+    <li class="nav-link nav-home-link"><a href="index.html">Home</a></li><li class="nav-heading">Classes</li><li class="nav-heading"><span class="nav-item-type type-class">C</span><span class="nav-item-name"><a href="BuildLight.html">BuildLight</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="BuildLight.html#_colours">_colours</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="BuildLight.html#_driver">_driver</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="BuildLight.html#blink">blink</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="BuildLight.html#off">off</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="BuildLight.html#on">on</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="BuildLight.html#unblink">unblink</a></span></li>
+</nav>
+
+<div id="main">
+    
+    <h1 class="page-title">buildlight.js</h1>
+    
+
+    
+
+
+
+    
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>"use strict"
+import async from 'async';
+import UsbLed from './drivers/usbled.js';
+
+/**
+ *  class BuildLight
+ *
+ * @param {Object} opts: optional
+ * - scheme: color scheme array, defaults to [ 'red', 'green', 'blue' ]
+ *           scheme allows flexibility to use BuildLight with various Delcom devices (RGB, RGY)
+ * - usbled: path to usbled installation, if not specified then it will try to
+ *           find a usbled installation at /sys/bus/usb/drivers/usbled/
+ * - interval: continuous task (e.g. blink) interval in milliseconds
+ *             switching between displaying color and no color, default to 500ms
+ * - gen: generation number of the build light
+ *        find the part number at the bottom of your device
+ *        and check it at Delcom product page https://www.delcomproducts.com/products_USBLMP.asp
+ */
+class BuildLight {
+  
+  constructor(opts) {
+    const RGB = [ 'red', 'green', 'blue' ];
+    const INTERVAL = 500;
+    const GEN = 1;
+
+    this.opts = opts || {};
+    this.scheme = this.opts.scheme || RGB;
+    this.interval = this.opts.interval || INTERVAL;
+    this.platform = this.opts.platform || process.platform;
+    this.gen = this.opts.gen || GEN;
+
+    this._driver();
+    this._colours();
+  }
+
+  /**
+   * Switch on all colours in the color scheme.
+   */
+  on() {
+    var self = this;
+    this.scheme.forEach(function (colour) {
+      self.driver.on(colour);
+    });
+  }
+
+  /**
+   * Switch off all colours in the color scheme.
+   */
+  off() {
+    var self = this;
+    this.scheme.forEach(function (colour) {
+      self.driver.off(colour);
+    });
+  }
+
+  /**
+   * Blink the specified colour.
+   *
+   * @param {String} colour: a colour from the scheme, default scheme either red, green, or blue
+   *   if no colour is specified then default to display all colours from the scheme
+   * @param {Function} cb: callback with error arg if there's any interruption
+   */
+  blink(colour, cb) {
+    if (!cb) {
+      cb = colour;
+      colour = null;
+    }
+
+    var self = this;
+    this.continuous = true;
+
+    function task(cb) {
+
+      // only timeout if continuous, otherwise finish off a.s.a.p
+      function _do(cb) {
+        if (self.continuous) {
+          setTimeout(cb, self.interval);
+        } else {
+          cb();
+        }
+      }
+
+      if (self.continuous) {
+
+        self[colour || 'on']();
+        _do(function () {
+          self.off();
+          _do(cb);
+        });
+
+      } else {
+        cb('Stop blinking...');
+      }
+    }
+
+    async.forever(task, cb);
+  }
+
+  /**
+   * Stop blinking.
+   * Wait for interval before calling callback to allow
+   * in-progress blink to finish.
+   *
+   * @param {Function} cb: callback with error arg if there's any interruption
+   */
+  unblink(cb) {
+    this.continuous = false;
+    setTimeout(cb, this.interval);
+  }
+
+  /**
+   * Select a driver to use based on platform.
+   * BuildLight currently supports Linux platform only, contributions for other platforms are welcome.
+   * - Linux platform uses usbled driver.
+   */
+  _driver() {
+    if (this.platform === 'linux' &amp;&amp; this.gen === 1) {
+      this.driver = new (UsbLed)(this.opts.usbled);
+    } else {
+      throw new Error('Unsupported platform ' + this.platform + ' with device generation ' + this.gen);
+    }
+  }
+
+  /**
+   * Initialise colour method based on colour scheme.
+   * If scheme is [ 'red', 'green', 'blue' ], then you use:
+   * buildLight.red();
+   * buildLight.green();
+   * buildLight.blue();
+   * Each colour method will switch off all colours, then switch on one particular colour.
+   */
+  _colours() {
+    var self = this;
+    this.scheme.forEach(function (colour) {
+      BuildLight.prototype[colour] = function () {
+        self.off();
+        self.driver.on(colour);
+      };
+    });
+  }
+
+}
+
+export {
+  BuildLight as default
+};
+
+</code></pre>
+        </article>
+    </section>
+
+
+
+
+</div>
+
+<br class="clear">
+
+<footer>
+    Generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.6.10</a> on Wed Jun 29 2022 00:26:50 GMT+0000 (Coordinated Universal Time) using the Minami theme.
+</footer>
+
+<script>prettyPrint();</script>
+<script src="scripts/linenumber.js"></script>
+</body>
+</html>

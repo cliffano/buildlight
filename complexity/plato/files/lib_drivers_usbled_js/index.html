@@ -44,11 +44,11 @@
   <div class="row">
     <div class="col-md-6">
       <h2 class="header">Maintainability <a href="http://blogs.msdn.com/b/codeanalysis/archive/2007/11/20/maintainability-index-range-and-meaning.aspx"><i class="icon icon-info-sign" rel="popover" data-placement="top" data-trigger="hover" data-content="A value between 0 and 100 that represents the relative ease of maintaining the code. A high value means better maintainability." data-original-title="Maintainability Index"  data-container="body"></i></a></h2>
-      <p class="stat">77.66</p>
+      <p class="stat">77.67</p>
     </div>
     <div class="col-md-6">
       <h2 class="header">Lines of code <i class="icon icon-info-sign" rel="popover" data-placement="top" data-trigger="hover" data-content="Source Lines of Code / Logical Lines of Code" data-original-title="SLOC/LSLOC" data-container="body"></i></h2>
-      <p class="stat">65</p>
+      <p class="stat">71</p>
     </div>
   </div>
   <div class="row historical">
@@ -62,11 +62,11 @@
   <div class="row">
     <div class="col-md-6">
       <h2 class="header">Difficulty  <a href="http://en.wikipedia.org/wiki/Halstead_complexity_measures"><i class="icon icon-info-sign" rel="popover" data-placement="top" data-trigger="hover" data-content="The difficulty measure is related to the difficulty of the program to write or understand." data-original-title="Difficulty" data-container="body"></i></a></h2>
-      <p class="stat">17.57</p>
+      <p class="stat">22.75</p>
     </div>
     <div class="col-md-6">
       <h2 class="header">Estimated Errors  <a href="http://en.wikipedia.org/wiki/Halstead_complexity_measures"><i class="icon icon-info-sign" rel="popover" data-placement="top" data-trigger="hover" data-content="Halstead's delivered bugs is an estimate for the number of errors in the implementation." data-original-title="Delivered Bugs" data-container="body"></i></a></h2>
-      <p class="stat">0.32</p>
+      <p class="stat">0.29</p>
     </div>
   </div>
 </div>
@@ -89,8 +89,9 @@
 
 <div class="container">
   <div class="row">
-    <textarea id="file-source" class="col-md-12">var fs = require(&#039;fs&#039;),
-  p = require(&#039;path&#039;);
+    <textarea id="file-source" class="col-md-12">&quot;use strict&quot;
+import fs from &#039;fs&#039;;
+import p from &#039;path&#039;;
 
 /**
  * class UsbLed
@@ -100,60 +101,65 @@
  * @param {String} path: usbled driver path, if not specified then it will try
  *                       to find driver path under /sys/bus/usb/drivers/usbled/ .
  */
-function UsbLed(path) {
-  this.path = path || this._find();
+class UsbLed {
+  
+  constructor(path) {
+    this.path = path || this._find();
+  }
+
+  /**
+   * Switch on the specified colour by writing a colour file containing value 1.
+   *
+   * @param {String} colour: the colour to switch on
+   */
+  on(colour) {
+    const ON = 1;
+    fs.writeFileSync(p.join(this.path, colour.toLowerCase()), ON);
+  }
+
+  /**
+   * Switch off the specified colour by writing a colour file containing value 0.
+   *
+   * @param {String} colour: the colour to switch off
+   */
+  off(colour) {
+    const OFF = 0;
+    fs.writeFileSync(p.join(this.path, colour.toLowerCase()), OFF);
+  }
+
+  /**
+   * Find usbled driver path under /sys/bus/usb/drivers/usbled/.
+   * If there are multiple versions installed, then it will pick the largest version number.
+   * If there&#039;s only one version installed, that version will be used.
+   * If there&#039;s none or if usbled is not installed, then an error will be thrown.
+   */
+  _find() {
+    const DIR = &#039;/sys/bus/usb/drivers/usbled/&#039;;
+
+    if (!fs.existsSync(DIR)) {
+      throw new Error(&#039;Unable to find USB LED driver installation.&#039;);
+    }
+
+    var versions = fs.readdirSync(DIR).filter(function (dir) {
+      return dir.match(/.+:.+/);
+    });
+
+    if (versions.length === 0) {
+      throw new Error(&#039;Unable to find USB LED driver installation.&#039;);
+    }
+
+    if (versions.length &gt; 1) {
+      versions.sort(function (v1, v2) {
+        return v1 &lt; v2;
+      });
+    }
+    return p.join(DIR, versions[0]);
+  }
 }
 
-/**
- * Switch on the specified colour by writing a colour file containing value 1.
- *
- * @param {String} colour: the colour to switch on
- */
-UsbLed.prototype.on = function (colour) {
-  const ON = 1;
-  fs.writeFileSync(p.join(this.path, colour.toLowerCase()), ON);
-};
-
-/**
- * Switch off the specified colour by writing a colour file containing value 0.
- *
- * @param {String} colour: the colour to switch off
- */
-UsbLed.prototype.off = function (colour) {
-  const OFF = 0;
-  fs.writeFileSync(p.join(this.path, colour.toLowerCase()), OFF);
-};
-
-/**
- * Find usbled driver path under /sys/bus/usb/drivers/usbled/.
- * If there are multiple versions installed, then it will pick the largest version number.
- * If there&#039;s only one version installed, that version will be used.
- * If there&#039;s none or if usbled is not installed, then an error will be thrown.
- */
-UsbLed.prototype._find = function () {
-  const DIR = &#039;/sys/bus/usb/drivers/usbled/&#039;;
-
-  if (!fs.existsSync(DIR)) {
-    throw new Error(&#039;Unable to find USB LED driver installation.&#039;);
-  }
-
-  var versions = fs.readdirSync(DIR).filter(function (dir) {
-    return dir.match(/.+:.+/);
-  });
-
-  if (versions.length === 0) {
-    throw new Error(&#039;Unable to find USB LED driver installation.&#039;);
-  }
-
-  if (versions.length &gt; 1) {
-    versions.sort(function (v1, v2) {
-      return v1 &lt; v2;
-    });
-  }
-  return p.join(DIR, versions[0]);
-};
-
-module.exports = UsbLed;</textarea>
+export {
+  UsbLed as default
+};</textarea>
   </div>
 </div>
 
@@ -165,10 +171,10 @@ module.exports = UsbLed;</textarea>
 
 <script type="text/html" id="complexity-popover-template">
   <div class="complexity-notice">
-    Complexity : {{ complexity.cyclomatic }} <br>
-    Length : {{ complexity.halstead.length }} <br>
-    Difficulty : {{ complexity.halstead.difficulty.toFixed(2) }} <br>
-    Est # bugs : {{ complexity.halstead.bugs.toFixed(2) }}<br>
+    Complexity : {{ cyclomatic }} <br>
+    Length : {{ halstead.length }} <br>
+    Difficulty : {{ halstead.difficulty.toFixed(2) }} <br>
+    Est # bugs : {{ halstead.bugs.toFixed(2) }}<br>
   </div>
 </script>
 

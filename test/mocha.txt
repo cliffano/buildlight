@@ -1,0 +1,48 @@
+
+[0m[0m
+[0m  buildlight - buildlight[0m
+  [32m  [32m✔[39m[0m[90m should set default colour scheme to RGB[0m
+  [32m  [32m✔[39m[0m[90m should allow custom colour scheme[0m
+  [32m  [32m✔[39m[0m[90m should set usbled driver when platform is linux[0m
+  [32m  [32m✔[39m[0m[90m should throw an error when platform is not supported[0m
+  [32m  [32m✔[39m[0m[90m should set colour methods based on colour scheme[0m
+  [32m  [32m✔[39m[0m[90m should set default opts[0m
+  [32m  [32m✔[39m[0m[90m should set custom interval if specified[0m
+
+[0m  buildlight - on[0m
+  [32m  [32m✔[39m[0m[90m should switch on all colours using specified driver[0m
+
+[0m  buildlight - off[0m
+  [32m  [32m✔[39m[0m[90m should switch off all colours using specified driver[0m
+
+[0m  buildlight - colours[0m
+  [32m  [32m✔[39m[0m[90m should switch off all colours in the scheme then switch on the selected colour[0m
+
+[0m  buildlight - blink[0m
+  [32m  [32m✔[39m[0m[90m should set switch specified colour on then off after unblink is called[0m[31m (503ms)[0m
+  [32m  [32m✔[39m[0m[90m should set switch all colours on then off after unblink is called[0m[31m (501ms)[0m
+
+[0m  buildlight - unblink[0m
+  [32m  [32m✔[39m[0m[90m should set continuous to false[0m
+
+[0m  usbled - usbled[0m
+  [32m  [32m✔[39m[0m[90m should set path[0m
+
+[0m  usbled - on[0m
+  [32m  [32m✔[39m[0m[90m should write 1 to colour file[0m
+  [32m  [32m✔[39m[0m[90m should handle case insensitive colours[0m
+
+[0m  usbled - off[0m
+  [32m  [32m✔[39m[0m[90m should write 0 to colour file[0m
+  [32m  [32m✔[39m[0m[90m should handle case insensitive colours[0m
+
+[0m  usbled - _find[0m
+  [32m  [32m✔[39m[0m[90m should return path when there is only one version of usbled installed[0m
+  [32m  [32m✔[39m[0m[90m should return path with newer version when there are multiple versions of usbled installed[0m
+  [32m  [32m✔[39m[0m[90m should throw an error when usbled exists but there is no version[0m
+  [32m  [32m✔[39m[0m[90m should throw an error when there is no usbled version installed[0m
+  [32m  [32m✔[39m[0m[90m should throw an error when usbled base directory does not exist[0m
+
+
+[92m [0m[32m 23 passing[0m[90m (1s)[0m
+

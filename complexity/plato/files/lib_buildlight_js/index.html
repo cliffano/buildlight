@@ -44,11 +44,11 @@
   <div class="row">
     <div class="col-md-6">
       <h2 class="header">Maintainability <a href="http://blogs.msdn.com/b/codeanalysis/archive/2007/11/20/maintainability-index-range-and-meaning.aspx"><i class="icon icon-info-sign" rel="popover" data-placement="top" data-trigger="hover" data-content="A value between 0 and 100 that represents the relative ease of maintaining the code. A high value means better maintainability." data-original-title="Maintainability Index"  data-container="body"></i></a></h2>
-      <p class="stat">78.47</p>
+      <p class="stat">76.56</p>
     </div>
     <div class="col-md-6">
       <h2 class="header">Lines of code <i class="icon icon-info-sign" rel="popover" data-placement="top" data-trigger="hover" data-content="Source Lines of Code / Logical Lines of Code" data-original-title="SLOC/LSLOC" data-container="body"></i></h2>
-      <p class="stat">131</p>
+      <p class="stat">146</p>
     </div>
   </div>
   <div class="row historical">
@@ -62,11 +62,11 @@
   <div class="row">
     <div class="col-md-6">
       <h2 class="header">Difficulty  <a href="http://en.wikipedia.org/wiki/Halstead_complexity_measures"><i class="icon icon-info-sign" rel="popover" data-placement="top" data-trigger="hover" data-content="The difficulty measure is related to the difficulty of the program to write or understand." data-original-title="Difficulty" data-container="body"></i></a></h2>
-      <p class="stat">30.86</p>
+      <p class="stat">34.94</p>
     </div>
     <div class="col-md-6">
       <h2 class="header">Estimated Errors  <a href="http://en.wikipedia.org/wiki/Halstead_complexity_measures"><i class="icon icon-info-sign" rel="popover" data-placement="top" data-trigger="hover" data-content="Halstead's delivered bugs is an estimate for the number of errors in the implementation." data-original-title="Delivered Bugs" data-container="body"></i></a></h2>
-      <p class="stat">0.61</p>
+      <p class="stat">0.62</p>
     </div>
   </div>
 </div>
@@ -89,11 +89,13 @@
 
 <div class="container">
   <div class="row">
-    <textarea id="file-source" class="col-md-12">var async = require(&#039;async&#039;);
+    <textarea id="file-source" class="col-md-12">&quot;use strict&quot;
+import async from &#039;async&#039;;
+import UsbLed from &#039;./drivers/usbled.js&#039;;
 
 /**
  *  class BuildLight
- * 
+ *
  * @param {Object} opts: optional
  * - scheme: color scheme array, defaults to [ &#039;red&#039;, &#039;green&#039;, &#039;blue&#039; ]
  *           scheme allows flexibility to use BuildLight with various Delcom devices (RGB, RGY)
@@ -101,125 +103,138 @@
  *           find a usbled installation at /sys/bus/usb/drivers/usbled/
  * - interval: continuous task (e.g. blink) interval in milliseconds
  *             switching between displaying color and no color, default to 500ms
+ * - gen: generation number of the build light
+ *        find the part number at the bottom of your device
+ *        and check it at Delcom product page https://www.delcomproducts.com/products_USBLMP.asp
  */
-function BuildLight(opts) {
-  const RGB = [ &#039;red&#039;, &#039;green&#039;, &#039;blue&#039; ];
-  const INTERVAL = 500;
+class BuildLight {
+  
+  constructor(opts) {
+    const RGB = [ &#039;red&#039;, &#039;green&#039;, &#039;blue&#039; ];
+    const INTERVAL = 500;
+    const GEN = 1;
 
-  this.opts = opts || {};
-  this.scheme = this.opts.scheme || RGB;
-  this.interval = this.opts.interval || INTERVAL;
-  this.platform = this.opts.platform || process.platform;
+    this.opts = opts || {};
+    this.scheme = this.opts.scheme || RGB;
+    this.interval = this.opts.interval || INTERVAL;
+    this.platform = this.opts.platform || process.platform;
+    this.gen = this.opts.gen || GEN;
 
-  this._driver();
-  this._colours();
-}
-
-/**
- * Switch on all colours in the color scheme.
- */
-BuildLight.prototype.on = function () {
-  var self = this;
-  this.scheme.forEach(function (colour) {
-    self.driver.on(colour);
-  });
-};
-
-/**
- * Switch off all colours in the color scheme.
- */
-BuildLight.prototype.off = function () {
-  var self = this;
-  this.scheme.forEach(function (colour) {
-    self.driver.off(colour);
-  });
-};
-
-/**
- * Blink the specified colour.
- *
- * @param {String} colour: a colour from the scheme, default scheme either red, green, or blue
- *   if no colour is specified then default to display all colours from the scheme
- * @param {Function} cb: callback with error arg if there&#039;s any interruption
- */
-BuildLight.prototype.blink = function (colour, cb) {
-  if (!cb) {
-    cb = colour;
-    colour = null;
+    this._driver();
+    this._colours();
   }
 
-  var self = this;
-  this.continuous = true;
-
-  function condition() {
-    return self.continuous;
-  }
-
-  function task(cb) {
-
-    // only timeout if continuous, otherwise finish off a.s.a.p
-    function _do(cb) {
-      if (self.continuous) {
-        setTimeout(cb, self.interval);
-      } else {
-        cb();
-      }
-    }
-
-    self[colour || &#039;on&#039;]();
-    _do(function () {
-      self.off();
-      _do(cb);
+  /**
+   * Switch on all colours in the color scheme.
+   */
+  on() {
+    var self = this;
+    this.scheme.forEach(function (colour) {
+      self.driver.on(colour);
     });
   }
 
-  async.whilst(condition, task, cb);
-};
-
-/**
- * Stop blinking.
- * Wait for interval before calling callback to allow
- * in-progress blink to finish.
- * 
- * @param {Function} cb: callback with error arg if there&#039;s any interruption
- */
-BuildLight.prototype.unblink = function (cb) {
-  this.continuous = false;
-  setTimeout(cb, this.interval);
-};
-
-/**
- * Select a driver to use based on platform.
- * BuildLight currently supports Linux platform only, contributions for other platforms are welcome.
- * - Linux platform uses usbled driver.
- */
-BuildLight.prototype._driver = function () {
-  if (this.platform === &#039;linux&#039;) {
-    this.driver = new (require(&#039;./drivers/usbled&#039;))(this.opts.usbled);
-  } else {
-    throw new Error(&#039;Unsupported platform &#039; + this.platform);
+  /**
+   * Switch off all colours in the color scheme.
+   */
+  off() {
+    var self = this;
+    this.scheme.forEach(function (colour) {
+      self.driver.off(colour);
+    });
   }
-};
 
-/**
- * Initialise colour method based on colour scheme.
- * If scheme is [ &#039;red&#039;, &#039;green&#039;, &#039;blue&#039; ], then you use:
- * buildLight.red();
- * buildLight.green();
- * buildLight.blue();
- * Each colour method will switch off all colours, then switch on one particular colour.
- */
-BuildLight.prototype._colours = function () {
-  var self = this;
-  this.scheme.forEach(function (colour) {
-    BuildLight.prototype[colour] = function () {
-      self.off();
-      self.driver.on(colour);
-    };
-  });
-};
+  /**
+   * Blink the specified colour.
+   *
+   * @param {String} colour: a colour from the scheme, default scheme either red, green, or blue
+   *   if no colour is specified then default to display all colours from the scheme
+   * @param {Function} cb: callback with error arg if there&#039;s any interruption
+   */
+  blink(colour, cb) {
+    if (!cb) {
+      cb = colour;
+      colour = null;
+    }
 
-module.exports = BuildLight;</textarea>
+    var self = this;
+    this.continuous = true;
+
+    function task(cb) {
+
+      // only timeout if continuous, otherwise finish off a.s.a.p
+      function _do(cb) {
+        if (self.continuous) {
+          setTimeout(cb, self.interval);
+        } else {
+          cb();
+        }
+      }
+
+      if (self.continuous) {
+
+        self[colour || &#039;on&#039;]();
+        _do(function () {
+          self.off();
+          _do(cb);
+        });
+
+      } else {
+        cb(&#039;Stop blinking...&#039;);
+      }
+    }
+
+    async.forever(task, cb);
+  }
+
+  /**
+   * Stop blinking.
+   * Wait for interval before calling callback to allow
+   * in-progress blink to finish.
+   *
+   * @param {Function} cb: callback with error arg if there&#039;s any interruption
+   */
+  unblink(cb) {
+    this.continuous = false;
+    setTimeout(cb, this.interval);
+  }
+
+  /**
+   * Select a driver to use based on platform.
+   * BuildLight currently supports Linux platform only, contributions for other platforms are welcome.
+   * - Linux platform uses usbled driver.
+   */
+  _driver() {
+    if (this.platform === &#039;linux&#039; &amp;&amp; this.gen === 1) {
+      this.driver = new (UsbLed)(this.opts.usbled);
+    } else {
+      throw new Error(&#039;Unsupported platform &#039; + this.platform + &#039; with device generation &#039; + this.gen);
+    }
+  }
+
+  /**
+   * Initialise colour method based on colour scheme.
+   * If scheme is [ &#039;red&#039;, &#039;green&#039;, &#039;blue&#039; ], then you use:
+   * buildLight.red();
+   * buildLight.green();
+   * buildLight.blue();
+   * Each colour method will switch off all colours, then switch on one particular colour.
+   */
+  _colours() {
+    var self = this;
+    this.scheme.forEach(function (colour) {
+      BuildLight.prototype[colour] = function () {
+        self.off();
+        self.driver.on(colour);
+      };
+    });
+  }
+
+}
+
+export {
+  BuildLight as default
+};</textarea>
   </div>
 </div>
 
@@ -231,10 +246,10 @@ module.exports = BuildLight;</textarea>
 
 <script type="text/html" id="complexity-popover-template">
   <div class="complexity-notice">
-    Complexity : {{ complexity.cyclomatic }} <br>
-    Length : {{ complexity.halstead.length }} <br>
-    Difficulty : {{ complexity.halstead.difficulty.toFixed(2) }} <br>
-    Est # bugs : {{ complexity.halstead.bugs.toFixed(2) }}<br>
+    Complexity : {{ cyclomatic }} <br>
+    Length : {{ halstead.length }} <br>
+    Difficulty : {{ halstead.difficulty.toFixed(2) }} <br>
+    Est # bugs : {{ halstead.bugs.toFixed(2) }}<br>
   </div>
 </script>
 
