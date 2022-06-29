@@ -22,8 +22,8 @@ Installation
 Usage
 -----
 
-    var BuildLight = require('buildlight'),
-      buildLight = new BuildLight();
+    import BuildLight from '../lib/buildlight.js';
+    const buildLight = new BuildLight();
 
     // switch on all colours
     buildLight.on();
