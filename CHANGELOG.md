@@ -8,14 +8,18 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## Unreleased
 
 ### Added
-- Add usbhid driver
 - Add device generation option
 
 ### Changed
-- Set min node engine to >= 4.0.0
+- Replace async.whilst with async.forever in blink logic
+- Change module type to ESM
+- Set min node engine to >= 16.0.0
 - Replace lint type from jshint to eslint
 - Replace coverage from buster-istanbul to c8
 - Replace doc type from dox-foundation to jsdoc
+
+### Removed
+- Remove usbhid driver
 
 ## 0.1.1 - 2015-06-21
 ### Changed
