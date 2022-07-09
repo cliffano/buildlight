@@ -13,7 +13,8 @@ describe('buildlight - buildlight', function () {
     });
   });
   afterEach(function () {
-    this.usbLedFindStub.restore();
+    sinon.verify();
+    sinon.restore();
   });
   it('should set default colour scheme to RGB', function () {
     const buildLight = new BuildLight({ platform: 'linux' });
@@ -64,7 +65,8 @@ describe('buildlight - on', function () {
     });
   });
   afterEach(function () {
-    this.usbLedFindStub.restore();
+    sinon.verify();
+    sinon.restore();
   });
   it('should switch on all colours using specified driver', function (done) {
     let callCount = 0;
@@ -91,7 +93,8 @@ describe('buildlight - off', function () {
     });
   });
   afterEach(function () {
-    this.usbLedFindStub.restore();
+    sinon.verify();
+    sinon.restore();
   });
   it('should switch off all colours using specified driver', function (done) {
     let callCount = 0;
@@ -118,7 +121,8 @@ describe('buildlight - colours', function () {
     });
   });
   afterEach(function () {
-    this.usbLedFindStub.restore();
+    sinon.verify();
+    sinon.restore();
   });
   it('should switch off all colours in the scheme then switch on the selected colour', function (done) {
     let offCallCount = 0;
@@ -145,7 +149,8 @@ describe('buildlight - blink', async function () {
     this.buildLight = new BuildLight({ platform: 'linux', interval: 0 });
   });
   afterEach(function () {
-    this.usbLedFindStub.restore();
+    sinon.verify();
+    sinon.restore();
   });
   it('should set switch specified colour on then off after unblink is called', function (done) {
     const self = this;
@@ -183,7 +188,8 @@ describe('buildlight - unblink', function () {
     });
   });
   afterEach(function () {
-    this.usbLedFindStub.restore();
+    sinon.verify();
+    sinon.restore();
   });
   it('should set continuous to false', function (done) {
     const buildLight = new BuildLight({ platform: 'linux', interval: 1 });

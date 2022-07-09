@@ -11,8 +11,8 @@ describe('usbled - usbled', function() {
     this.mockFs = sinon.mock(fs);
   });
   afterEach(function () {
-    this.mockFs.verify();
-    this.mockFs.restore();
+    sinon.verify();
+    sinon.restore();
   });
   it('should set path', function () {
     const usbled = new UsbLed('/some/path');
@@ -25,8 +25,8 @@ describe('usbled - on', function() {
     this.mockFs = sinon.mock(fs);
   });
   afterEach(function () {
-    this.mockFs.verify();
-    this.mockFs.restore();
+    sinon.verify();
+    sinon.restore();
   });
   it('should write 1 to colour file', function () {
     this.mockFs.expects('writeFileSync').once().withExactArgs('/some/path/red', 1);
@@ -45,8 +45,8 @@ describe('usbled - off', function() {
     this.mockFs = sinon.mock(fs);
   });
   afterEach(function () {
-    this.mockFs.verify();
-    this.mockFs.restore();
+    sinon.verify();
+    sinon.restore();
   });
   it('should write 0 to colour file', function () {
     this.mockFs.expects('writeFileSync').once().withExactArgs('/some/path/red', 0);
@@ -65,8 +65,8 @@ describe('usbled - _find', function() {
     this.mockFs = sinon.mock(fs);
   });
   afterEach(function () {
-    this.mockFs.verify();
-    this.mockFs.restore();
+    sinon.verify();
+    sinon.restore();
   });
   it('should return path when there is only one version of usbled installed', function () {
     this.mockFs.expects('existsSync').once().withExactArgs('/sys/bus/usb/drivers/usbled/').returns(true);
