@@ -13,7 +13,7 @@
   "contributors": [
     "All contributors (https://github.com/cliffano/buildlight/graphs/contributors)"
   ],
-  "main": "./lib/buildlight",
+  "main": "./lib/buildlight.js",
   "repository": {
     "type": "git",
     "url": "http://github.com/cliffano/buildlight.git"
