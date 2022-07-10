@@ -29,11 +29,11 @@ describe('usbled - on', function() {
     sinon.restore();
   });
   it('should write 1 to colour file', function () {
-    this.mockFs.expects('writeFileSync').once().withExactArgs('/some/path/red', 1);
+    this.mockFs.expects('writeFileSync').once().withExactArgs('/some/path/red', '1');
     new UsbLed('/some/path').on('red'); 
   });
   it('should handle case insensitive colours', function () {
-    this.mockFs.expects('writeFileSync').twice().withExactArgs('/some/path/red', 1);
+    this.mockFs.expects('writeFileSync').twice().withExactArgs('/some/path/red', '1');
     const usbled = new UsbLed('/some/path');
     usbled.on('RED');
     usbled.on('rEd');
@@ -49,11 +49,11 @@ describe('usbled - off', function() {
     sinon.restore();
   });
   it('should write 0 to colour file', function () {
-    this.mockFs.expects('writeFileSync').once().withExactArgs('/some/path/red', 0);
+    this.mockFs.expects('writeFileSync').once().withExactArgs('/some/path/red', '0');
     new UsbLed('/some/path').off('red'); 
   });
   it('should handle case insensitive colours', function () {
-    this.mockFs.expects('writeFileSync').twice().withExactArgs('/some/path/red', 0);
+    this.mockFs.expects('writeFileSync').twice().withExactArgs('/some/path/red', '0');
     const usbled = new UsbLed('/some/path');
     usbled.off('RED');
     usbled.off('rEd');
