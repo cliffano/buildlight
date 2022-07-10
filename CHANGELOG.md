@@ -7,6 +7,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## Unreleased
 
+### Changed
+- Replace on and off value with string '1' and '0'
+
 ### Fixed
 - Fix main module path
 
