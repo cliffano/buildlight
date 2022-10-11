@@ -55,12 +55,12 @@ Usage
 Colophon
 --------
 
-[Developer's Guide](http://cliffano.github.io/developers_guide.html#nodejs)
+[Developer's Guide](https://cliffano.github.io/developers_guide.html#nodejs)
 
 Build reports:
 
-* [Code complexity report](http://cliffano.github.io/buildlight/complexity/plato/index.html)
-* [Unit tests report](http://cliffano.github.io/buildlight/test/mocha.txt)
-* [Test coverage report](http://cliffano.github.io/buildlight/coverage/c8/index.html)
-* [Integration tests report](http://cliffano.github.io/buildlight/test-integration/mocha.txt)
-* [API Documentation](http://cliffano.github.io/buildlight/doc/jsdoc/index.html)
+* [Code complexity report](https://cliffano.github.io/buildlight/complexity/plato/index.html)
+* [Unit tests report](https://cliffano.github.io/buildlight/test/mocha.txt)
+* [Test coverage report](https://cliffano.github.io/buildlight/coverage/c8/index.html)
+* [Integration tests report](https://cliffano.github.io/buildlight/test-integration/mocha.txt)
+* [API Documentation](https://cliffano.github.io/buildlight/doc/jsdoc/index.html)
